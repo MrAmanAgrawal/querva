@@ -44,9 +44,11 @@ export default function Sidebar() {
       {/* Bottom Navigation */}
       <div className="border-t border-purple-900/30 p-4">
         <div className="space-y-2">
-          <div className="cursor-pointer rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
+          <Link
+            href="/datasets"
+            className="block rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
             Data Sources
-          </div>
+          </Link>
 
           <div className="cursor-pointer rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
             Reports
