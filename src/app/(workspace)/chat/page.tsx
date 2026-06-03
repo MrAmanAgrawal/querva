@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useDataset } from "@/providers/dataset-provider";
 
 import WorkspaceLayout from "@/components/workspace/workspace-layout";
 import ChatWindow from "@/components/chat/chat-window";
@@ -14,6 +15,8 @@ interface Message {
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
+
+  const { fileName, rowCount } = useDataset();
 
   const handleSendMessage = async (message: string) => {
     // Add user message
@@ -70,6 +73,10 @@ export default function ChatPage() {
         <h1 className="mb-6 text-3xl font-bold text-white">
           New Analysis
         </h1>
+
+        <p className="mb-4 text-green-400">
+          Dataset: {fileName || "None"} ({rowCount} rows)
+        </p>
 
         <ChatWindow messages={messages} />
 

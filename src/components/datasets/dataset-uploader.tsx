@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import Papa from "papaparse";
+import { useDataset } from "@/providers/dataset-provider";
 
 export default function DatasetUploader() {
   const [fileName, setFileName] = useState("");
   const [columns, setColumns] = useState<string[]>([]);
   const [previewData, setPreviewData] = useState<any[]>([]);
   const [rowCount, setRowCount] = useState(0);
+
+  const { setDataset } = useDataset();
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -27,11 +30,22 @@ export default function DatasetUploader() {
 
         setRowCount(data.length);
 
-        if (data.length > 0) {
-          setColumns(Object.keys(data[0]));
-        }
+        const extractedColumns =
+          data.length > 0 ? Object.keys(data[0]) : [];
 
-        setPreviewData(data.slice(0, 5));
+        setColumns(extractedColumns);
+
+        const previewRows = data.slice(0, 5);
+
+        setPreviewData(previewRows);
+
+        // Save dataset globally
+        setDataset(
+          file.name,
+          extractedColumns,
+          data.length,
+          previewRows
+        );
       },
     });
   };
