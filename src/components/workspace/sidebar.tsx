@@ -1,29 +1,63 @@
+import Link from "next/link";
 export default function Sidebar() {
   return (
-    <aside className="w-64 border-r border-purple-900/30 bg-black/20">
-      <div className="p-6">
+    <aside className="flex h-screen w-72 flex-col border-r border-purple-900/30 bg-black/20">
+      
+      {/* Logo */}
+      <div className="border-b border-purple-900/30 p-6">
         <h1 className="text-2xl font-bold text-white">
           Querva
         </h1>
       </div>
 
-      <nav className="space-y-2 p-4 text-zinc-400">
-        <div className="rounded-lg p-3 hover:bg-purple-950">
-          Dashboard
-        </div>
+      {/* New Analysis */}
+      <div className="p-4">
+        <Link
+            href="/chat"
+            className="block w-full rounded-xl bg-purple-600 px-4 py-3 text-center text-white transition hover:bg-purple-700"
+  >
+    + New Analysis
+        </Link>
+      </div>
 
-        <div className="rounded-lg p-3 hover:bg-purple-950">
-          Datasets
-        </div>
+      {/* Recent Chats */}
+      <div className="flex-1 px-4">
+        <p className="mb-3 text-xs uppercase tracking-wider text-zinc-500">
+          Recent Chats
+        </p>
 
-        <div className="rounded-lg p-3 hover:bg-purple-950">
-          Reports
-        </div>
+        <div className="space-y-2">
+          <div className="cursor-pointer rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
+            Sales Analysis
+          </div>
 
-        <div className="rounded-lg p-3 hover:bg-purple-950">
-          Settings
+          <div className="cursor-pointer rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
+            Revenue Forecast
+          </div>
+
+          <div className="cursor-pointer rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
+            Customer Insights
+          </div>
         </div>
-      </nav>
+      </div>
+
+      {/* Bottom Navigation */}
+      <div className="border-t border-purple-900/30 p-4">
+        <div className="space-y-2">
+          <div className="cursor-pointer rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
+            Data Sources
+          </div>
+
+          <div className="cursor-pointer rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
+            Reports
+          </div>
+
+          <div className="cursor-pointer rounded-lg p-3 text-zinc-400 hover:bg-purple-950">
+            Settings
+          </div>
+        </div>
+      </div>
+
     </aside>
   );
 }

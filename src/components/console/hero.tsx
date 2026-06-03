@@ -1,3 +1,4 @@
+import RecentConversations from "./recent-conversations";
 import QuickActions from "./quick-actions";
 import { Input } from "@/components/ui/input";
 
@@ -52,6 +53,7 @@ export default function Hero() {
       </div>
 
       <QuickActions />
+      <RecentConversations />
     </div>
   );
 }
