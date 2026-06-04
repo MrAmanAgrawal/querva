@@ -16,7 +16,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
 
-  const { fileName, rowCount } = useDataset();
+  const {fileName,rowCount,columns,previewData,} = useDataset();
   console.log("Chat Reading Dataset", {
   fileName,
   rowCount,
@@ -42,7 +42,13 @@ export default function ChatPage() {
         },
         body: JSON.stringify({
           message,
-        }),
+          dataset: {
+            fileName,
+            rowCount,
+            columns,
+            previewData,
+  },
+}),
       });
 
       const data = await response.json();
