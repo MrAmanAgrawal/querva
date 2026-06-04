@@ -1,5 +1,6 @@
 import WorkspaceLayout from "@/components/workspace/workspace-layout";
 import DatasetUploader from "@/components/datasets/dataset-uploader";
+import AIInsights from "@/components/datasets/ai-insights";
 
 export default function DatasetsPage() {
   return (
@@ -13,7 +14,11 @@ export default function DatasetsPage() {
           Upload and manage your datasets.
         </p>
 
-        <DatasetUploader />
+        <div className="space-y-6">
+          <DatasetUploader />
+
+          <AIInsights />
+        </div>
       </div>
     </WorkspaceLayout>
   );

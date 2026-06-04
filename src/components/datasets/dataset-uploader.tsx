@@ -33,17 +33,9 @@ export default function DatasetUploader() {
 
         const previewRows = data.slice(0, 5);
 
-        console.log("Dataset Parsed", {
-          fileName: file.name,
-          rows: data.length,
-          columns: extractedColumns,
-        });
-
         setRowCount(data.length);
         setColumns(extractedColumns);
         setPreviewData(previewRows);
-
-        console.log("Calling setDataset()");
 
         setDataset(
           file.name,
@@ -84,19 +76,101 @@ export default function DatasetUploader() {
         </div>
       )}
 
+      {/* Stats Cards */}
+      {fileName && (
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="rounded-xl border border-purple-900/30 bg-black/20 p-6">
+            <p className="text-sm text-zinc-400">
+              Dataset
+            </p>
+
+            <h3 className="mt-2 text-xl font-bold text-white break-all">
+              {fileName}
+            </h3>
+          </div>
+
+          <div className="rounded-xl border border-purple-900/30 bg-black/20 p-6">
+            <p className="text-sm text-zinc-400">
+              Rows
+            </p>
+
+            <h3 className="mt-2 text-3xl font-bold text-white">
+              {rowCount}
+            </h3>
+          </div>
+
+          <div className="rounded-xl border border-purple-900/30 bg-black/20 p-6">
+            <p className="text-sm text-zinc-400">
+              Columns
+            </p>
+
+            <h3 className="mt-2 text-3xl font-bold text-white">
+              {columns.length}
+            </h3>
+          </div>
+        </div>
+      )}
+
+      {/* AI Insights */}
+      {fileName && (
+        <div className="mt-6 rounded-xl border border-purple-900/30 bg-black/20 p-6">
+          <h3 className="mb-4 text-lg font-semibold text-white">
+            AI Insights
+          </h3>
+
+          <div className="space-y-3 text-zinc-300">
+            <p>
+              • Dataset contains {rowCount} records.
+            </p>
+
+            <p>
+              • {columns.length} columns available for analysis.
+            </p>
+
+            <p>
+              • Ready for trend, comparison and summary analysis.
+            </p>
+
+            <p>
+              • AI can answer questions using uploaded data.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Suggested Questions */}
+      {fileName && (
+        <div className="mt-6 rounded-xl border border-purple-900/30 bg-black/20 p-6">
+          <h3 className="mb-4 text-lg font-semibold text-white">
+            Suggested Questions
+          </h3>
+
+          <div className="flex flex-wrap gap-3">
+            {[
+              "Summarize this dataset",
+              "Find key insights",
+              "Identify trends",
+              "Show unusual patterns",
+              "Compare categories",
+              "What should I investigate?",
+            ].map((question) => (
+              <button
+                key={question}
+                className="rounded-lg bg-purple-600 px-3 py-2 text-sm text-white transition hover:bg-purple-700"
+              >
+                {question}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Dataset Summary */}
       {columns.length > 0 && (
         <div className="mt-6 rounded-xl border border-purple-900/30 p-4">
           <h3 className="mb-4 text-lg font-semibold text-white">
-            Dataset Summary
+            Dataset Columns
           </h3>
-
-          <p className="text-zinc-300">
-            Rows: {rowCount}
-          </p>
-
-          <p className="mb-4 text-zinc-300">
-            Columns: {columns.length}
-          </p>
 
           <div className="flex flex-wrap gap-2">
             {columns.map((column) => (
@@ -111,6 +185,7 @@ export default function DatasetUploader() {
         </div>
       )}
 
+      {/* Preview Table */}
       {previewData.length > 0 && (
         <div className="mt-6 overflow-x-auto rounded-xl border border-purple-900/30">
           <table className="w-full text-left">
