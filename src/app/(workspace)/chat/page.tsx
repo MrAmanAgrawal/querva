@@ -17,6 +17,10 @@ export default function ChatPage() {
   const [isThinking, setIsThinking] = useState(false);
 
   const { fileName, rowCount } = useDataset();
+  console.log("Chat Reading Dataset", {
+  fileName,
+  rowCount,
+});
 
   const handleSendMessage = async (message: string) => {
     // Add user message

@@ -28,24 +28,33 @@ export default function DatasetUploader() {
       complete: (results) => {
         const data = results.data as any[];
 
-        setRowCount(data.length);
-
         const extractedColumns =
           data.length > 0 ? Object.keys(data[0]) : [];
 
-        setColumns(extractedColumns);
-
         const previewRows = data.slice(0, 5);
 
+        console.log("Dataset Parsed", {
+          fileName: file.name,
+          rows: data.length,
+          columns: extractedColumns,
+        });
+
+        setRowCount(data.length);
+        setColumns(extractedColumns);
         setPreviewData(previewRows);
 
-        // Save dataset globally
+        console.log("Calling setDataset()");
+
         setDataset(
           file.name,
           extractedColumns,
           data.length,
           previewRows
         );
+      },
+
+      error: (error) => {
+        console.error("CSV Parse Error:", error);
       },
     });
   };

@@ -1,6 +1,11 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 
 interface DatasetContextType {
   fileName: string;
@@ -16,7 +21,8 @@ interface DatasetContextType {
   ) => void;
 }
 
-const DatasetContext = createContext<DatasetContextType | null>(null);
+const DatasetContext =
+  createContext<DatasetContextType | null>(null);
 
 export function DatasetProvider({
   children,
@@ -28,12 +34,38 @@ export function DatasetProvider({
   const [rowCount, setRowCount] = useState(0);
   const [previewData, setPreviewData] = useState<any[]>([]);
 
+  useEffect(() => {
+    const savedDataset =
+      localStorage.getItem("querva_dataset");
+
+    if (savedDataset) {
+      const dataset = JSON.parse(savedDataset);
+
+      setFileName(dataset.fileName);
+      setColumns(dataset.columns);
+      setRowCount(dataset.rowCount);
+      setPreviewData(dataset.previewData);
+    }
+  }, []);
+
   const setDataset = (
     newFileName: string,
     newColumns: string[],
     newRowCount: number,
     newPreviewData: any[]
   ) => {
+    const dataset = {
+      fileName: newFileName,
+      columns: newColumns,
+      rowCount: newRowCount,
+      previewData: newPreviewData,
+    };
+
+    localStorage.setItem(
+      "querva_dataset",
+      JSON.stringify(dataset)
+    );
+
     setFileName(newFileName);
     setColumns(newColumns);
     setRowCount(newRowCount);
