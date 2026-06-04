@@ -1,7 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+
 import { useDataset } from "@/providers/dataset-provider";
+import { useAnalysis } from "@/providers/analysis-provider";
 
 import WorkspaceLayout from "@/components/workspace/workspace-layout";
 import ChatWindow from "@/components/chat/chat-window";
@@ -16,14 +22,23 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isThinking, setIsThinking] = useState(false);
 
-  const {fileName,rowCount,columns,previewData,} = useDataset();
-  console.log("Chat Reading Dataset", {
-  fileName,
-  rowCount,
-});
+  const hasAutoSent = useRef(false);
 
-  const handleSendMessage = async (message: string) => {
-    // Add user message
+  const {
+    fileName,
+    rowCount,
+    columns,
+    previewData,
+  } = useDataset();
+
+  const {
+    suggestedQuestion,
+    clearSuggestedQuestion,
+  } = useAnalysis();
+
+  const handleSendMessage = async (
+    message: string
+  ) => {
     setMessages((prev) => [
       ...prev,
       {
@@ -38,7 +53,8 @@ export default function ChatPage() {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type":
+            "application/json",
         },
         body: JSON.stringify({
           message,
@@ -47,8 +63,8 @@ export default function ChatPage() {
             rowCount,
             columns,
             previewData,
-  },
-}),
+          },
+        }),
       });
 
       const data = await response.json();
@@ -58,7 +74,8 @@ export default function ChatPage() {
         {
           role: "assistant",
           content:
-            data.reply || "No response received.",
+            data.reply ||
+            "No response received.",
         },
       ]);
     } catch (error) {
@@ -77,6 +94,26 @@ export default function ChatPage() {
     }
   };
 
+  useEffect(() => {
+    if (!suggestedQuestion) return;
+
+    if (hasAutoSent.current) return;
+
+    hasAutoSent.current = true;
+
+    handleSendMessage(
+      suggestedQuestion
+    );
+
+    clearSuggestedQuestion();
+  }, [suggestedQuestion]);
+
+  useEffect(() => {
+    if (!suggestedQuestion) {
+      hasAutoSent.current = false;
+    }
+  }, [suggestedQuestion]);
+
   return (
     <WorkspaceLayout>
       <div className="mx-auto max-w-4xl">
@@ -85,7 +122,8 @@ export default function ChatPage() {
         </h1>
 
         <p className="mb-4 text-green-400">
-          Dataset: {fileName || "None"} ({rowCount} rows)
+          Dataset: {fileName || "None"} (
+          {rowCount} rows)
         </p>
 
         <ChatWindow messages={messages} />
@@ -96,7 +134,11 @@ export default function ChatPage() {
           </p>
         )}
 
-        <ChatInput onSendMessage={handleSendMessage} />
+        <ChatInput
+          onSendMessage={
+            handleSendMessage
+          }
+        />
       </div>
     </WorkspaceLayout>
   );

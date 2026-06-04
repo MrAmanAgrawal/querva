@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Papa from "papaparse";
 import { useDataset } from "@/providers/dataset-provider";
+import { useRouter } from "next/navigation";
+import { useAnalysis } from "@/providers/analysis-provider";
 
 export default function DatasetUploader() {
   const [fileName, setFileName] = useState("");
@@ -11,6 +13,10 @@ export default function DatasetUploader() {
   const [rowCount, setRowCount] = useState(0);
 
   const { setDataset } = useDataset();
+  const router = useRouter();
+
+  const { setSuggestedQuestion } =
+  useAnalysis();
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -156,8 +162,12 @@ export default function DatasetUploader() {
             ].map((question) => (
               <button
                 key={question}
+                onClick={() => {
+                  setSuggestedQuestion(question);
+                  router.push("/chat");
+                }}
                 className="rounded-lg bg-purple-600 px-3 py-2 text-sm text-white transition hover:bg-purple-700"
-              >
+>
                 {question}
               </button>
             ))}
